@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 'use client';
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
@@ -8,12 +9,21 @@ import {jwtDecode} from "jwt-decode";
 interface Props {
   children: ReactNode;
 }
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<User>;
+  register: (userData: RegisterData) => Promise<void>;
+  logout: () => void;
+}
+
 export interface User {
     id: string;
     email: string;
     role: string;
     // Add other user properties as needed
 }
+
 export interface RegisterData {
     name: string;
     email: string;
@@ -22,11 +32,10 @@ export interface RegisterData {
 export interface AuthContextType {
     user: User | null;
     loading: boolean;
-    login: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<User>;
     register: (userData: RegisterData) => Promise<void>;
     logout: () => void;
 }
-
 
 interface DecodedToken {
     id: string;
@@ -66,7 +75,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<User> => {
     try {
       const response = await axios.post('/auth/login', { email, password });
       const { accessToken, refreshToken } = response.data;
@@ -80,16 +89,13 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
       // Decode token to get user info
       const decoded: DecodedToken = jwtDecode(accessToken);
-      setUser({
-        id: decoded.id,
-        email: decoded.email,
-        role: decoded.role,
-      });
-      return {
+      const user:User = {
         id: decoded.id,
         email: decoded.email,
         role: decoded.role,
       }
+      setUser(user);
+      return user;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Login error:', error);
@@ -97,16 +103,17 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  // const register = async (userData: RegisterData) => {
-  //   try {
-  //     const response = await axios.post('/auth/register', userData);
-  //     // Optionally auto-login after registration
-  //     await login(userData.email, userData.password);
-  //   } catch (error: any) {
-  //     console.error('Registration error:', error);
-  //     throw new Error(error.response?.data?.message || 'Registration failed');
-  //   }
-  // };
+  const register = async (userData: RegisterData) => {
+    try {
+      const response = await axios.post('/auth/register', userData);
+      // Optionally auto-login after registration
+      await login(userData.email, userData.password);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      throw new Error(error.response?.data?.message || 'Registration failed');
+    }
+  };
 
   const logout = () => {
     if (typeof window !== 'undefined') {
@@ -118,7 +125,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
