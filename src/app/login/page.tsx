@@ -64,7 +64,7 @@ export default function LoginPage() {
               User Login
             </Typography>
             <Typography variant="body2">
-              Email : user@gmail.com
+              Email : test@gmail.com
             </Typography>
             <Typography variant="body2">
               Password: 1234
