@@ -9,7 +9,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  const {login} = useAuth()
+  const { login } = useAuth()
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
@@ -21,13 +21,13 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const {role} = await login(email, password) as unknown as {role: string};
+      
+      const {role} = await login(email, password);
       if(role === 'admin') {
         router.push('/admin');
       }else{
         router.push('/user')
       }
-      console.log(role)
     } catch {
       alert('Invalid credentials');
     }
