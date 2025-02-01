@@ -21,6 +21,7 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const {role} = await login(email, password)
       if(role === 'admin') {
         router.push('/admin');
