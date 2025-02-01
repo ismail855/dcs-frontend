@@ -1,6 +1,5 @@
 // theme/theme.ts
 import { createTheme } from '@mui/material/styles';
-import { deepPurple, teal } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
