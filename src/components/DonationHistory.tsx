@@ -30,12 +30,12 @@ export default function DonationHistory() {
     try {
       let sl = 1;
       const {data} = await axiosInstance.get('/donations');
-      setRows(data.map(donation=>{
+      setRows(data.map((donation:Donation) =>{
         return {
           ...donation,
           sl: sl++,
           amountToTaka: `৳ ${donation.amount}`,
-          donationDate: format(Date(donation.donationDate), 'dd MMM yyyy')
+          donationDate: format(new Date(donation.donationDate), 'dd MMM yyyy')
         }
       }));
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,7 +82,7 @@ export default function DonationHistory() {
     if (!confirm('Are you sure you want to soft-delete this donation?')) return;
     try {
       await axiosInstance.delete(`/donations/${id}`);
-      setDonations((prev) => prev.filter((d) => d.id !== id));
+      setRows((prev) => prev.filter((d) => d.id !== id));
     } catch (error) {
       console.error(error);
       alert('Delete failed');
