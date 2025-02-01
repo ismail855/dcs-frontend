@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { TextField, Button, Stack } from '@mui/material';
 import axiosInstance from '@/utils/axiosInstance';
-
+import axios from 'axios';
 export default function DonationForm() {
   const [donorName, setDonorName] = useState('');
   const [amount, setAmount] = useState<number>(0);
@@ -57,7 +57,7 @@ export default function DonationForm() {
       setErrors({});
     } catch (err) {
       console.error(err);
-      if (err.response && err.response.status === 400) {
+      if (axios.isAxiosError(err) && err.response && err.response.status === 400) {
         // Handle server-side validation errors
         const serverErrors = err.response.data.message;
         const formattedErrors: { [key: string]: string } = {};
