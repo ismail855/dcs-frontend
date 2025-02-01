@@ -20,7 +20,8 @@ export default function ReportPage() {
       try {
         const res = await axiosInstance.get('/donations/report');
         setReport(res.data);
-      } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) { 
         if (err.response && err.response.status === 401) {
           router.push('/login');
         }

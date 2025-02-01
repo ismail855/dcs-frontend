@@ -1,18 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Box, Typography, Tabs, Tab, Paper } from '@mui/material';
-import DonationReports from '@/components/DonationReports';
-import DonationHistory from '@/components/DonationHistory';
+import { Box, Typography } from '@mui/material';
 
 export default function AdminDashboard() {
-  const [tabValue, setTabValue] = useState(0);
-  const [token, setToken] = useState()
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
-
-
   return (
     <>
       <Box sx={{ p: 3 }}>

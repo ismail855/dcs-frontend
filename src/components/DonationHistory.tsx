@@ -38,6 +38,7 @@ export default function DonationHistory() {
           donationDate: format(Date(donation.donationDate), 'dd MMM yyyy')
         }
       }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
       if (err.response && err.response.status === 401) {

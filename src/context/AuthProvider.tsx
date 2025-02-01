@@ -3,7 +3,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import axios from '../utils/axiosInstance';
 import {jwtDecode} from "jwt-decode";
-import { useRouter } from 'next/navigation';
+
 
 interface Props {
   children: ReactNode;
@@ -90,22 +90,23 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         email: decoded.email,
         role: decoded.role,
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Login error:', error);
       throw new Error(error.response?.data?.message || 'Login failed');
     }
   };
 
-  const register = async (userData: RegisterData) => {
-    try {
-      const response = await axios.post('/auth/register', userData);
-      // Optionally auto-login after registration
-      await login(userData.email, userData.password);
-    } catch (error: any) {
-      console.error('Registration error:', error);
-      throw new Error(error.response?.data?.message || 'Registration failed');
-    }
-  };
+  // const register = async (userData: RegisterData) => {
+  //   try {
+  //     const response = await axios.post('/auth/register', userData);
+  //     // Optionally auto-login after registration
+  //     await login(userData.email, userData.password);
+  //   } catch (error: any) {
+  //     console.error('Registration error:', error);
+  //     throw new Error(error.response?.data?.message || 'Registration failed');
+  //   }
+  // };
 
   const logout = () => {
     if (typeof window !== 'undefined') {

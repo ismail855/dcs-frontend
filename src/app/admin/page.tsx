@@ -7,7 +7,6 @@ import DonationHistory from '@/components/DonationHistory';
 
 export default function AdminDashboard() {
   const [tabValue, setTabValue] = useState(0);
-  const [token, setToken] = useState()
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
